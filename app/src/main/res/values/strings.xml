@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Smartglass Application</string>
+    <string name="pg">Point Guard</string>
+    <string name="sg">Shooting Guard</string>
+    <string name="sf">Small Forward Guard</string>
+    <string name="pf">Power Forward</string>
+    <string name="c">Center</string>
 </resources>
