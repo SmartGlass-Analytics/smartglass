@@ -1,0 +1,2 @@
+clientId:  client.basketball.alabamambb
+clientSecret: 0vBg4oX7mqNx
