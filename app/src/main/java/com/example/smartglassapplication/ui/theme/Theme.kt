@@ -1,29 +1,45 @@
 package com.example.smartglassapplication.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Alabama Crimson and White
-val Crimson = Color(0xFF9E1B32)
-val White = Color(0xFFFFFFFF)
-val DarkBackground = Color(0xFF121212)
+private val AlabamaWhite = Color(0xFFFFFFFF)
+private val OnCrimson = Color(0xFFFFFFFF)
+private val OnWhite = Color(0xFF000000)
 
-private val AlabamaColorScheme = darkColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary = Crimson,
-    onPrimary = White,
-    secondary = Crimson,
-    onSecondary = White,
-    background = DarkBackground,
-    onBackground = White,
+    onPrimary = OnCrimson,
+    secondary = AlabamaWhite,
+    onSecondary = OnWhite,
+    background = AlabamaWhite,
+    onBackground = OnWhite,
+    surface = AlabamaWhite,
+    onSurface = OnWhite
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = Crimson,
+    onPrimary = OnCrimson,
+    secondary = AlabamaWhite,
+    onSecondary = OnWhite,
+    background = Color(0xFF121212),
+    onBackground = AlabamaWhite,
     surface = Color(0xFF1E1E1E),
-    onSurface = White
+    onSurface = AlabamaWhite
 )
 
 @Composable
-fun SmartglassApplicationTheme(content: @Composable () -> Unit) {
+fun SmartGlassApplicationTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+
     MaterialTheme(
-        colorScheme = AlabamaColorScheme,
+        colorScheme = colorScheme,
         typography = Typography,
         content = content
     )

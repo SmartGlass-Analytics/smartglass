@@ -1,51 +1,39 @@
-package com.example.smartglassapplication.ui.theme
-
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.painterResource // 👈 this import
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.smartglassapplication.data.Player
-@OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun PlayerCard(player: Player) {
-    var expanded by remember { mutableStateOf(false) }
-
+fun PlayerCard(player: Player, navController: NavController) {
     Card(
-        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { expanded = !expanded },
-        elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+            .clickable {
+                navController.navigate("profile/${player.name}/${player.position}/${player.stats}/${player.imageRes}")
+            }
+            .padding(8.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             Image(
-                painter = painterResource(id = player.avatarRes),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(56.dp)
-                    .padding(end = 16.dp)
+                painter = painterResource(id = player.imageRes),
+                contentDescription = player.name,
+                modifier = Modifier.size(64.dp),
+                contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(player.name, style = MaterialTheme.typography.titleMedium)
-                Text(player.position, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
-                AnimatedVisibility(visible = expanded) {
-                    Text(
-                        text = "Stats: ${player.stats}",
-                        modifier = Modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+                Text(player.position, style = MaterialTheme.typography.bodyMedium)
+                Text(player.stats, style = MaterialTheme.typography.bodySmall)
             }
         }
     }
