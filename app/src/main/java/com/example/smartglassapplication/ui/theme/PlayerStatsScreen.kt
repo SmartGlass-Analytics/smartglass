@@ -1,11 +1,18 @@
 package com.example.smartglassapplication.ui.theme
 
 import PlayerCard
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.smartglassapplication.R
@@ -33,10 +40,33 @@ fun PlayerStatsScreen(navController: NavController) {
                 .padding(padding)
                 .padding(16.dp)
         ) {
+            // button code should go here?
+            item{
+                StatsScreen(title = "Get Game Stats")
+            }
             items(players.size) { index ->
                 PlayerCard(player = players[index], navController = navController)
                 Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
+}
+
+@Composable
+fun StatsScreen(title: String){
+    val context = LocalContext.current
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color(0xFF9E1B32))
+            .clickable { getBoxScore(context=context) },
+        textAlign = TextAlign.Center,
+        color = Color.Black,
+        )
+}
+
+fun getBoxScore(context: Context){
+    Toast.makeText(context, "Box Score Request Made", Toast.LENGTH_SHORT).show()
 }
