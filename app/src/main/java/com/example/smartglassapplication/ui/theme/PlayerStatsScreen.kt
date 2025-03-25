@@ -4,12 +4,13 @@ import PlayerCard
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.smartglassapplication.R
 import com.example.smartglassapplication.data.Player
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,10 +23,27 @@ fun PlayerStatsScreen(navController: NavController) {
         Player("C. Omoruyi", "Center", "3 Pts, 1 Ast, 11 Reb", R.drawable.cliffordomoruyi)
     )
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Player Stats") })
-        }
+            TopAppBar(
+                title = { Text("Player Stats") },
+                actions = {
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Retrieving box score")
+                            }
+                        }
+                    ) {
+                        Text("Box Score")
+                    }
+                }
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         LazyColumn(
             modifier = Modifier
