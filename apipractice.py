@@ -48,6 +48,9 @@ def printPlayerStats(boxJS):
             dreb = json.dumps(data["defReb"])
             assists = json.dumps(data["assists"])
             resultString = f"{playerName}: {points} PTS, {assists} AST, {oreb} OREB, {dreb} DREB"
+            if "ppp" in data.keys(): 
+                ppp = json.dumps(data["ppp"]) 
+                resultString += f", {ppp[0:5]} PPP"
             file.write(resultString +"\n")
 
 
