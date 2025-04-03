@@ -102,12 +102,12 @@ def printPlayerStats(boxJS):
             pjson['min'] = time
 
             # possible calculated player stats
-            # PER (Points + Rebounds + Assists + Steals + Blocks) - (Missed Field Goals + Missed Free Throws + Turnovers + Shots Rejected + Fouls) 
+            # PER  (Points + Rebounds + Assists + Steals + Blocks) - (Missed Field Goals + Missed Free Throws + Turnovers + Shots Rejected + Fouls) 
             # USG% (Field Goals Attempted + Free Throws Attempted + Turnovers) / (Team Field Goals Attempted + Team Free Throws Attempted + Team Turnovers) * 100 
             # ORTG Points scored per 100 possessions
-            # EFG%  [(Field Goals Made + (0.5 * Three-Point Field Goals Made)) / Field Goals Attempted] * 100
+            # EFG% [(Field Goals Made + (0.5 * Three-Point Field Goals Made)) / Field Goals Attempted] * 100
             # TOV% Turnovers / (Field Goals Attempted + (0.475 * Free Throws Attempted) + Assists + Turnovers) * 100 
-            # TS% Points / (2 * (Field Goals Attempted + (0.475 * Free Throws Attempted))) 
+            # TS%  Points / (2 * (Field Goals Attempted + (0.475 * Free Throws Attempted))) 
             # ORB% (Offensive Rebounds / (Offensive Rebounds + Opponent's Defensive Rebounds)) * 100
             # DRB% (Defensive Rebounds / (Defensive Rebounds + Opponent's Offensive Rebounds)) * 100 
             # AST% Assists / (Assists + Field Goals Attempted + Turnovers) * 100 
