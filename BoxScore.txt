@@ -1,23 +1,23 @@
 Alabama Crimson Tide
-Mark Sears: 13 PTS, 4 AST, 0 OREB, 2 DREB, 0.619 PPP
-Max Scharnowski: 0 PTS, 0 AST, 0 OREB, 0 DREB
-Grant Nelson: 7 PTS, 1 AST, 0 OREB, 5 DREB, 1.4 PPP
-Jarin Stevenson: 16 PTS, 0 AST, 1 OREB, 3 DREB, 1.777 PPP
-Mouhamed Dioubate: 13 PTS, 0 AST, 0 OREB, 8 DREB, 1.625 PPP
-Labaron Philon: 21 PTS, 4 AST, 1 OREB, 2 DREB, 1.235 PPP
-Aden Holloway: 13 PTS, 4 AST, 0 OREB, 2 DREB, 1.083 PPP
-Chris Youngblood: 6 PTS, 1 AST, 0 OREB, 0 DREB, 1.0 PPP
-Clifford Omoruyi: 8 PTS, 1 AST, 1 OREB, 5 DREB, 1.142 PPP
-Aiden Sherrell: 2 PTS, 1 AST, 4 OREB, 3 DREB, 0.5 PPP
-Derrion Reid: 0 PTS, 1 AST, 0 OREB, 2 DREB, 0.0 PPP
+Mark Sears: 13 PTS, 4 AST, 1.33 AST/TO, 0 OREB, 2 DREB, 0.61 PPP, 2/2 FT, 1/8 3PT, 5/17 FG, 30 MIN
+Max Scharnowski: 0 PTS, 0 AST, 0.0 AST/TO, 0 OREB, 0 DREB, n/a PPP, 0/0 FT, 0/0 3PT, 0/0 FG, 3 MIN
+Grant Nelson: 7 PTS, 1 AST, 1.0 AST/TO, 0 OREB, 5 DREB, 1.4 PPP, 2/2 FT, 1/2 3PT, 2/3 FG, 16 MIN
+Jarin Stevenson: 16 PTS, 0 AST, 0.0 AST/TO, 1 OREB, 3 DREB, 1.77 PPP, 1/1 FT, 3/5 3PT, 6/8 FG, 19 MIN
+Mouhamed Dioubate: 13 PTS, 0 AST, 0.0 AST/TO, 0 OREB, 8 DREB, 1.62 PPP, 2/2 FT, 1/1 3PT, 5/6 FG, 22 MIN
+Labaron Philon: 21 PTS, 4 AST, 4.0 AST/TO, 1 OREB, 2 DREB, 1.23 PPP, 4/6 FT, 1/4 3PT, 8/14 FG, 26 MIN
+Aden Holloway: 13 PTS, 4 AST, 4.0 AST/TO, 0 OREB, 2 DREB, 1.08 PPP, 3/4 FT, 2/4 3PT, 4/9 FG, 21 MIN
+Chris Youngblood: 6 PTS, 1 AST, 0.0 AST/TO, 0 OREB, 0 DREB, 1.0 PPP, 0/0 FT, 2/5 3PT, 2/6 FG, 26 MIN
+Clifford Omoruyi: 8 PTS, 1 AST, 0.0 AST/TO, 1 OREB, 5 DREB, 1.14 PPP, 2/4 FT, 0/0 3PT, 3/5 FG, 13 MIN
+Aiden Sherrell: 2 PTS, 1 AST, 0.5 AST/TO, 4 OREB, 3 DREB, 0.5 PPP, 0/0 FT, 0/0 3PT, 1/2 FG, 15 MIN
+Derrion Reid: 0 PTS, 1 AST, 0.0 AST/TO, 0 OREB, 2 DREB, 0.0 PPP, 0/0 FT, 0/0 3PT, 0/1 FG, 9 MIN
 
 Kentucky Wildcats
-Otega Oweh: 8 PTS, 0 AST, 0 OREB, 4 DREB, 0.533 PPP
-Koby Brea: 8 PTS, 2 AST, 0 OREB, 3 DREB, 0.727 PPP
-Collin Chandler: 4 PTS, 1 AST, 0 OREB, 2 DREB, 0.666 PPP
-Andrew Carr: 18 PTS, 1 AST, 0 OREB, 2 DREB, 1.5 PPP
-Trent Noah: 4 PTS, 2 AST, 1 OREB, 1 DREB, 0.5 PPP
-Brandon Garrison: 1 PTS, 1 AST, 0 OREB, 2 DREB, 0.333 PPP
-Travis Perry: 11 PTS, 1 AST, 1 OREB, 3 DREB, 0.846 PPP
-Ansley Almonor: 0 PTS, 0 AST, 2 OREB, 2 DREB, 0.0 PPP
-Amari Williams: 16 PTS, 4 AST, 1 OREB, 6 DREB, 0.941 PPP
+Otega Oweh: 8 PTS, 0 AST, 0.0 AST/TO, 0 OREB, 4 DREB, 0.53 PPP, 6/8 FT, 0/0 3PT, 1/6 FG, 21 MIN
+Koby Brea: 8 PTS, 2 AST, 2.0 AST/TO, 0 OREB, 3 DREB, 0.72 PPP, 0/0 FT, 2/7 3PT, 3/10 FG, 33 MIN
+Collin Chandler: 4 PTS, 1 AST, 0.33 AST/TO, 0 OREB, 2 DREB, 0.66 PPP, 1/2 FT, 1/1 3PT, 1/2 FG, 17 MIN
+Andrew Carr: 18 PTS, 1 AST, 1.0 AST/TO, 0 OREB, 2 DREB, 1.5 PPP, 1/2 FT, 1/2 3PT, 8/10 FG, 19 MIN
+Trent Noah: 4 PTS, 2 AST, 2.0 AST/TO, 1 OREB, 1 DREB, 0.5 PPP, 0/0 FT, 0/4 3PT, 2/7 FG, 19 MIN
+Brandon Garrison: 1 PTS, 1 AST, 1.0 AST/TO, 0 OREB, 2 DREB, 0.33 PPP, 1/2 FT, 0/0 3PT, 0/1 FG, 16 MIN
+Travis Perry: 11 PTS, 1 AST, 0.5 AST/TO, 1 OREB, 3 DREB, 0.84 PPP, 6/8 FT, 1/3 3PT, 2/8 FG, 30 MIN
+Ansley Almonor: 0 PTS, 0 AST, 0.0 AST/TO, 2 OREB, 2 DREB, 0.0 PPP, 0/0 FT, 0/2 3PT, 0/4 FG, 16 MIN
+Amari Williams: 16 PTS, 4 AST, 2.0 AST/TO, 1 OREB, 6 DREB, 0.94 PPP, 8/13 FT, 0/0 3PT, 4/8 FG, 28 MIN
