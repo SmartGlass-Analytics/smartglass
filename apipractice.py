@@ -34,6 +34,7 @@ def get_access_token(url, client_id, client_secret):
 
 def printPlayerStats(boxJS):
     with open(BOX_SCORE_DATA, "w") as file:
+        # determine first team listed in the json
         teamOne = boxJS[0]["data"]["team"]["fullName"]
         switchedTeam = False
         file.write(teamOne + "\n")
@@ -46,7 +47,7 @@ def printPlayerStats(boxJS):
                 file.write("\n" + data["team"]["fullName"] + "\n")
                 switchedTeam = True
 
-            # Stat retreival from Server json
+            # Stat retreival from Server json and adding data to our created Json
             playerName = json.dumps(data["player"]["name"]).strip('"')
             statString = f"{playerName}: "
             pjson = {}
@@ -99,8 +100,19 @@ def printPlayerStats(boxJS):
             time = int(json.dumps(data["secondsPlayed"])) // 60
             statString += f"{time} MIN"
             pjson['min'] = time
+
+            # possible calculated player stats
+            # PER (Points + Rebounds + Assists + Steals + Blocks) - (Missed Field Goals + Missed Free Throws + Turnovers + Shots Rejected + Fouls) 
+            # USG% (Field Goals Attempted + Free Throws Attempted + Turnovers) / (Team Field Goals Attempted + Team Free Throws Attempted + Team Turnovers) * 100 
+            # ORTG Points scored per 100 possessions
+            # EFG%  [(Field Goals Made + (0.5 * Three-Point Field Goals Made)) / Field Goals Attempted] * 100
+            # TOV% Turnovers / (Field Goals Attempted + (0.475 * Free Throws Attempted) + Assists + Turnovers) * 100 
+            # TS% Points / (2 * (Field Goals Attempted + (0.475 * Free Throws Attempted))) 
+            # ORB% (Offensive Rebounds / (Offensive Rebounds + Opponent's Defensive Rebounds)) * 100
+            # DRB% (Defensive Rebounds / (Defensive Rebounds + Opponent's Offensive Rebounds)) * 100 
+            # AST% Assists / (Assists + Field Goals Attempted + Turnovers) * 100 
         
-            # Text File and Json Creation
+            # Text File Creation and dictionary assginment to player anme for json creation
             file.write(statString +"\n")
             playerstats[playerName] = pjson
 
@@ -108,7 +120,7 @@ def printPlayerStats(boxJS):
             json.dump(playerstats, fp, indent=4)
         
 
-def retreive_game_stat(game_id, access_token):
+def retreive_game_stat(game_id, access_token): #obtain a json file that stores all the stats Synergy has, obtained from a get reqeuest provided by Synergy
     url = f"http://basketball.synergysportstech.com/external/api/games/{game_id}/boxscores"
     gameStats = requests.get(url,headers={'Authorization': f'Bearer {access_token}'})
     boxJS = gameStats.json()["data"]
