@@ -1,2 +1,2 @@
-clientId:  client.basketball.alabamambb
-clientSecret: 0vBg4oX7mqNx
+client.basketball.alabamambb
+0vBg4oX7mqNx

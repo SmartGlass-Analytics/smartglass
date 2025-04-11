@@ -3,9 +3,14 @@ import requests
 import json
 from pprint import pprint
 
+
 # provided by alabama mens basketball team for API access
-CLIENT_ID = "client.basketball.alabamambb"
-CLIENT_SECRET = "0vBg4oX7mqNx"
+with open("alabama_api.txt", "r") as file:
+    CLIENT_ID = file.readline().strip()
+    CLIENT_SECRET = file.readline().strip()
+    print(CLIENT_ID)
+    print(CLIENT_SECRET)
+
 TOKEN_URL = "https://auth.synergysportstech.com/connect/token"
 
 # Files and locations where we store access changing data
