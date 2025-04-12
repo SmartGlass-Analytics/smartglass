@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import com.example.smartglassapplication.ui.theme.HomeScreen
 import com.example.smartglassapplication.ui.theme.PlayerStatsScreen
 import com.example.smartglassapplication.ui.theme.PlayerProfileScreen
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+        if( !Python.isStarted() ) {
+            Python.start( AndroidPlatform( this ) )
         }
     }
 }

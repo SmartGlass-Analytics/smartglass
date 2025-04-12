@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.chaquo.python.Python
 import com.example.smartglassapplication.R
 import com.example.smartglassapplication.data.Player
 
@@ -68,5 +69,8 @@ fun StatsScreen(title: String){
 }
 
 fun getBoxScore(context: Context){
-    Toast.makeText(context, "Box Score Request Made", Toast.LENGTH_SHORT).show()
+    val py = Python.getInstance()
+    val module = py.getModule( "apipractice" )
+    val gameID = module["GAME_ID"]
+    Toast.makeText(context, gameID.toString(), Toast.LENGTH_SHORT).show()
 }
