@@ -1,16 +1,23 @@
 package com.example.smartglassapplication.ui.theme
 
 import PlayerCard
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.chaquo.python.Python
 import com.example.smartglassapplication.R
 import com.example.smartglassapplication.data.Player
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,27 +30,10 @@ fun PlayerStatsScreen(navController: NavController) {
         Player("C. Omoruyi", "Center", "3 Pts, 1 Ast, 11 Reb", R.drawable.cliffordomoruyi)
     )
 
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Player Stats") },
-                actions = {
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Retrieving box score")
-                            }
-                        }
-                    ) {
-                        Text("Box Score")
-                    }
-                }
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+            TopAppBar(title = { Text("Player Stats") })
+        }
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -51,10 +41,36 @@ fun PlayerStatsScreen(navController: NavController) {
                 .padding(padding)
                 .padding(16.dp)
         ) {
+            // button code should go here?
+            item{
+                StatsScreen(title = "Get Game Stats")
+            }
             items(players.size) { index ->
                 PlayerCard(player = players[index], navController = navController)
                 Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
+}
+
+@Composable
+fun StatsScreen(title: String){
+    val context = LocalContext.current
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color(0xFF9E1B32))
+            .clickable { getBoxScore(context=context) },
+        textAlign = TextAlign.Center,
+        color = Color.Black,
+        )
+}
+
+fun getBoxScore(context: Context){
+    val py = Python.getInstance()
+    val module = py.getModule( "apipractice" )
+    val gameID = module["GAME_ID"]
+    Toast.makeText(context, gameID.toString(), Toast.LENGTH_SHORT).show()
 }

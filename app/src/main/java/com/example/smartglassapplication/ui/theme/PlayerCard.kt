@@ -22,7 +22,7 @@ fun PlayerCard(player: Player, navController: NavController) {
             }
             .padding(8.dp)
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(8.dp)) { //This line changes spacing of the buttons themselves
             Image(
                 painter = painterResource(id = player.imageRes),
                 contentDescription = player.name,
