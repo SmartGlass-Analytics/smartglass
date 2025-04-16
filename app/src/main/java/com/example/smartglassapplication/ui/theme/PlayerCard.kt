@@ -1,3 +1,5 @@
+package com.example.smartglassapplication.ui.theme
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,8 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource // 👈 this import
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import androidx.navigation.NavController
 import com.example.smartglassapplication.data.Player
 
@@ -18,22 +22,27 @@ fun PlayerCard(player: Player, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navController.navigate("profile/${player.name}/${player.position}/${player.stats}/${player.imageRes}")
+                val encoded = URLEncoder.encode(player.stats, StandardCharsets.UTF_8.toString())
+                navController.navigate(
+                    "profile/${player.name}/${player.position}/$encoded/${player.imageRes}"
+                )
             }
             .padding(8.dp)
     ) {
-        Row(modifier = Modifier.padding(8.dp)) { //This line changes spacing of the buttons themselves
+        Row(Modifier.padding(8.dp)) {
             Image(
-                painter = painterResource(id = player.imageRes),
+                painter = painterResource(player.imageRes),
                 contentDescription = player.name,
                 modifier = Modifier.size(64.dp),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(Modifier.width(16.dp))
             Column {
                 Text(player.name, style = MaterialTheme.typography.titleMedium)
-                Text(player.position, style = MaterialTheme.typography.bodyMedium)
-                Text(player.stats, style = MaterialTheme.typography.bodySmall)
+                if (player.position.isNotBlank())
+                    Text(player.position, style = MaterialTheme.typography.bodyMedium)
+                if (player.summary != "—")
+                    Text(player.summary, style = MaterialTheme.typography.bodySmall)
             }
         }
     }
