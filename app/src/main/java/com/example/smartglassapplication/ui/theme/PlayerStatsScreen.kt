@@ -18,6 +18,10 @@ import androidx.navigation.NavController
 import com.chaquo.python.Python
 import com.example.smartglassapplication.R
 import com.example.smartglassapplication.data.Player
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,9 +72,41 @@ fun StatsScreen(title: String){
         )
 }
 
+fun getJsonObjectFromFile(filePath: String): JsonObject? {
+    return try {
+        val jsonString = File(filePath).readText()
+        Json.decodeFromString(JsonObject.serializer(), jsonString)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
 fun getBoxScore(context: Context){
     val py = Python.getInstance()
+    val resultLocation = "/data/user/0/com.example.smartglassapplication/files/result.json"
+    val lineupLocation = "/data/user/0/com.example.smartglassapplication/files/lineup.json"
     val module = py.getModule( "apipractice" )
-    val gameID = module["GAME_ID"]
-    Toast.makeText(context, gameID.toString(), Toast.LENGTH_SHORT).show()
+
+    val token_url = module["TOKEN_URL"].toString()
+    val client_id = module["CLIENT_ID"].toString()
+    val client_secret = module["CLIENT_SECRET"].toString()
+    val token = module.callAttr("get_access_token", token_url, client_id, client_secret)
+
+    val game_id = module["GAME_ID"].toString()
+    @Suppress("unused")
+    val unused  = module.callAttr("retreive_game_stat", game_id, token)
+
+    val resultJson = getJsonObjectFromFile(resultLocation)
+    resultJson?.let {
+        val value = resultJson["Mark Sears"] as? JsonObject
+        Toast.makeText(context, value?.get("points").toString(), Toast.LENGTH_SHORT).show()
+    } ?: println("Failed to read or parse JSON file result.json")
+
+    val unused2 = module.callAttr("lineupStats","Mark Sears", "Aden Holloway",  "Mouhamed Dioubate", "Grant Nelson", "Aiden Sherrell")
+    val lineupJson = getJsonObjectFromFile(lineupLocation)
+    lineupJson?.let {
+        val value = lineupJson["player1"]
+        Toast.makeText(context, value.toString(), Toast.LENGTH_SHORT).show()
+    } ?: println("Failed to read or parse JSON file lineup.json")
 }

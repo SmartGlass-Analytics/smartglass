@@ -18,7 +18,7 @@ TOKEN_URL = "https://auth.synergysportstech.com/connect/token"
 
 # Files and locations where we store access changing data
 TOKEN_FILE = join(os.environ["HOME"], "SynergyAuth.txt")
-GAME_ID = "67c7597c0d7d2e7999594652"
+GAME_ID = "67e6363d721d8b16b8da7478"
 
 LINEUP_FILE = join(os.environ["HOME"], "lineup.json")
 RESULT_FILE = join(os.environ["HOME"], "result.json")
@@ -54,16 +54,10 @@ def printPlayerStats(boxJS):
         teamTwoOReb = 0
         teamOneDReb = 0
         teamTwoDReb = 0
-        file.write(teamOne + "\n")
+        file.write("All Starter Stats" + "\n")
         playerstats = {}
         for entry in boxJS:
             data = entry["data"] # obtain relevant info from json
-
-            # Logic for knowing when to switch printed team
-            if data["team"]["fullName"] != teamOne and not switchedTeam:
-                teamTwo = data["team"]["fullName"]
-                file.write("\n" + data["team"]["fullName"] + "\n")
-                switchedTeam = True
 
             # Stat retreival from Server json and adding data to our created Json
             playerName = json.dumps(data["player"]["name"]).strip('"')
@@ -90,7 +84,7 @@ def printPlayerStats(boxJS):
             statString += f"{dreb} DREB, "
             pjson['dreb'] = dreb
 
-            if not switchedTeam:
+            if data["team"]["fullName"] == teamOne:
                 teamOneOReb += oreb 
                 teamOneDReb += dreb
             else:
