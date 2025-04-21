@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -56,7 +57,11 @@ fun PlayerProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = name, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center) }
+                title = { Text(
+                    text = name,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                ) }
             )
         },
         bottomBar = {
@@ -128,14 +133,16 @@ fun PlayerProfileScreen(
             // Player header without colored background
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(model = imageRes),
                     contentDescription = name,
                     modifier = Modifier
                         .size(160.dp)
-                        .background(Color.LightGray, RoundedCornerShape(80.dp)),  // optional light placeholder bg
+                        .background(Color.LightGray, RoundedCornerShape(80.dp)),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(Modifier.height(12.dp))
