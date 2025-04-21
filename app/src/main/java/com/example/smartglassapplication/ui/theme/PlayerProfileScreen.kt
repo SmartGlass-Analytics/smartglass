@@ -1,18 +1,26 @@
 package com.example.smartglassapplication.ui.theme
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.smartglassapplication.ble.BrilliantBleClient
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,90 +30,173 @@ fun PlayerProfileScreen(
     stats: String,
     imageRes: Int
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val scroll = rememberScrollState()
 
-    Scaffold(topBar = { TopAppBar(title = { Text(name) }) }) { pad ->
+    // Parse stats into list of (label, value), strip leading '+' if present
+    val statsList: List<Pair<String, String>> = remember(stats) {
+        stats.lineSequence()
+            .mapNotNull { it.split(":", limit = 2).takeIf { it.size == 2 } }
+            .map { (rawLabel, rawValue) ->
+                val label = rawLabel.trim().removePrefix("+")
+                val value = rawValue.trim().removePrefix("+")
+                label to value
+            }
+            .toList()
+    }
+
+    // Map to track selection; start all unchecked
+    val selectedMap = remember {
+        mutableStateMapOf<String, Boolean>().apply {
+            statsList.forEach { (label, _) -> this[label] = false }
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = name, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center) }
+            )
+        },
+        bottomBar = {
+            // Send button always visible
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    onClick = {
+                        val chosen = statsList
+                            .filter { (label, _) -> selectedMap[label] == true }
+                            .joinToString("; ") { (l, v) -> "$l: $v" }
+                        if (chosen.isBlank()) {
+                            Toast.makeText(
+                                context,
+                                "Select at least one stat",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            scope.launch {
+                                BrilliantBleClient
+                                    .sendText(context, chosen)
+                                    .collect { result ->
+                                        result.onSuccess {
+                                            Toast.makeText(
+                                                context,
+                                                "Sent to glasses!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                        result.onFailure { err ->
+                                            Toast.makeText(
+                                                context,
+                                                "BLE error: ${err.message}",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    }
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        text = "Send to Glasses",
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+            }
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scroll)
-                .padding(pad)
+                .padding(paddingValues)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            /* --------- Photo, Name, Position (no border) --------- */
-            Image(
-                painter = rememberAsyncImagePainter(imageRes),
-                contentDescription = name,
-                modifier = Modifier.size(160.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            Text(
-                name,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-
-            if (position.isNotBlank())
-                Text(
-                    position,
-                    style = MaterialTheme.typography.bodyMedium
+            // Player header without colored background
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = imageRes),
+                    contentDescription = name,
+                    modifier = Modifier
+                        .size(160.dp)
+                        .background(Color.LightGray, RoundedCornerShape(80.dp)),  // optional light placeholder bg
+                    contentScale = ContentScale.Crop
                 )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+                if (position.isNotBlank()) {
+                    Text(
+                        text = position,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    )
+                }
+            }
 
             Spacer(Modifier.height(24.dp))
 
-            /* --------- Stat sheet --------- */
             Text(
-                "Game Stats",
+                text = "Select stats to send",
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
-                modifier = Modifier.padding(bottom = 8.dp),
-                color = MaterialTheme.colorScheme.primary
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(horizontal = 8.dp)
             )
 
+            Spacer(Modifier.height(8.dp))
+
             Card(
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                ),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(Modifier.padding(16.dp)) {
-                    val lines = stats.split('\n').filter { it.contains(":") }
-
-                    if (lines.isEmpty()) {
-                        Text(
-                            "No stats available yet.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
-                    } else {
-                        lines.forEachIndexed { idx, line ->
-                            val (label, value) = line.split(":", limit = 2)
-                            StatRow(label.trim(), value.trim())
-                            if (idx != lines.lastIndex)
-                                HorizontalDivider(Modifier.padding(vertical = 6.dp))
+                Column(modifier = Modifier.padding(16.dp)) {
+                    statsList.forEachIndexed { idx, (label, value) ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        ) {
+                            Checkbox(
+                                checked = selectedMap[label] == true,
+                                onCheckedChange = { checked ->
+                                    selectedMap[label] = checked
+                                }
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = "$label: $value",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
+                        if (idx < statsList.lastIndex) Divider()
                     }
                 }
             }
+
+            Spacer(Modifier.height(80.dp)) // leave room for bottomBar
         }
     }
 }
-
-@Composable
-private fun StatRow(label: String, value: String) {
-    val cleanValue = value.removePrefix("+").trim()   // ← removes leading “+”
-
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-        Text(cleanValue, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-    }
-}
-
