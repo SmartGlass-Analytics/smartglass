@@ -191,7 +191,7 @@ fun PlayerProfileScreen(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
-                        if (idx < statsList.lastIndex) Divider()
+                        if (idx < statsList.lastIndex) HorizontalDivider()
                     }
                 }
             }
