@@ -153,12 +153,12 @@ def printPlayerStats(boxJS):
             # EFG% [(Field Goals Made + (0.5 * Three-Point Field Goals Made)) / Field Goals Attempted] * 100
             if shotsTotal != 0:
                 efg = (shotsMade + (0.5 * threePointMade)) / shotsTotal * 100
-                pjson['EFG'] = efg
+                pjson['EFG'] = round(efg, 3)
 
             # TS%  Points / (2 * (Field Goals Attempted + (0.475 * Free Throws Attempted)))
             if shotsTotal != 0 or ftTotal != 0:
                 ts = points / (2 * (shotsTotal + (0.475 * ftTotal))) * 100
-                pjson['TrueShooting'] = ts
+                pjson['TS%'] = round(ts, 3)
 
             pjson['team'] = data["team"]["fullName"]
         
@@ -180,11 +180,11 @@ def printPlayerStats(boxJS):
         for player in playerstats:
             pjson = playerstats[player]
             if pjson['team'] == teamOne:
-                pjson['ORB%'] = pjson['oreb'] / (pjson['oreb'] + teamTwoDReb)
-                pjson['DRB%'] = pjson['dreb'] / (pjson['dreb'] + teamTwoOReb)
+                pjson['ORB%'] = round(pjson['oreb'] / (pjson['oreb'] + teamTwoDReb), 3)
+                pjson['DRB%'] = round(pjson['dreb'] / (pjson['dreb'] + teamTwoOReb), 3)
             else:
-                pjson['ORB%'] = pjson['oreb'] / (pjson['oreb'] + teamOneDReb)
-                pjson['DRB%'] = pjson['dreb'] / (pjson['dreb'] + teamOneOReb)
+                pjson['ORB%'] = round(pjson['oreb'] / (pjson['oreb'] + teamOneDReb), 3)
+                pjson['DRB%'] = round(pjson['dreb'] / (pjson['dreb'] + teamOneOReb), 3)
 
         playerstats[teamTwo] = team2Json
         playerstats[teamOne] = team1Json
@@ -223,7 +223,7 @@ def lineupStats(player1, player2, player3, player4, player5):
     lineupStats['teamDRB%'] = (p1json['DRB%'] + p2json['DRB%'] + p3json['DRB%'] + p4json['DRB%'] + p5json['DRB%']) / 5
     lineupStats['teamPPP'] = (p1json['ppp'] + p2json['ppp'] + p3json['ppp'] + p4json['ppp'] + p5json['ppp']) / 5
     lineupStats['teamORTG'] = (p1json['ORTG'] + p2json['ORTG'] + p3json['ORTG'] + p4json['ORTG'] + p5json['ORTG']) / 5
-    lineupStats['teamTS%'] = (p1json['TrueShooting'] + p2json['TrueShooting'] + p3json['TrueShooting'] + p4json['TrueShooting'] + p5json['TrueShooting']) / 5
+    lineupStats['teamTS%'] = (p1json['TS%'] + p2json['TS%'] + p3json['TS%'] + p4json['TS%'] + p5json['TS%']) / 5
     lineupStats['teamEFG'] = (p1json['EFG'] + p2json['EFG'] + p3json['EFG'] + p4json['EFG'] + p5json['EFG']) / 5
     lineupStats['teamPER'] = (p1json['PER'] + p2json['PER'] + p3json['PER'] + p4json['PER'] + p5json['PER']) / 5
 

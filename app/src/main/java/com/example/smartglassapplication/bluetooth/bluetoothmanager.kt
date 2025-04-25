@@ -102,7 +102,7 @@ class BleCommunicator(private val context: Context) {
                     // for ActivityCompat#requestPermissions for more details.
                     return
                 }
-                gatt.requestMtu(150)
+                gatt.requestMtu(256)
             }
             if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 gatt.close()
@@ -189,7 +189,7 @@ class BleCommunicator(private val context: Context) {
         Log.d("BLE", "in send message")
         txCharacteristic?.let {
             val command = "frame.display.text('$msg', 1, 1);frame.display.show()"
-            val byteArray: ByteArray = command.toByteArray(Charsets.UTF_8)
+            val byteArray: ByteArray = msg.toByteArray(Charsets.UTF_8)
             val success = if (ActivityCompat.checkSelfPermission(context,
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
