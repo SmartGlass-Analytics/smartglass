@@ -83,7 +83,7 @@ fun PlayerProfileScreen(
                     onClick = {
                         val chosen = statsList
                             .filter { (label, _) -> selectedMap[label] == true }
-                            .joinToString("; ") { (l, v) -> "$l: $v" }
+                            .joinToString(", ") { (l, v) -> "$v $l" }
                         if (chosen.isBlank()) {
                             Toast.makeText(
                                 context,
@@ -92,8 +92,9 @@ fun PlayerProfileScreen(
                             ).show()
                         } else {
                             val ble = BleCommunicator(context)
-                            Log.d("BLE", "Chosen Stats: $chosen")
-                            ble.connectToDevice(chosen)
+                            val printString = "$name: $chosen"
+                            Log.d("BLE", printString)
+                            ble.connectToDevice(printString)
                         }
                     },
                     modifier = Modifier
