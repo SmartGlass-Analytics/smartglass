@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url=uri("https://repo.maven.apache.org/maven2/com/chaquo/python/com.chaquo.python.gradle.plugin/")  }
     }
 }
 

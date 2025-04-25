@@ -1,77 +1,86 @@
 package com.example.smartglassapplication
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.smartglassapplication.ui.theme.SmartglassApplicationTheme
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
+import com.example.smartglassapplication.ui.theme.HomeScreen
+import com.example.smartglassapplication.ui.theme.PlayerProfileScreen
+import com.example.smartglassapplication.ui.theme.PlayerStatsScreen
+import com.example.smartglassapplication.ui.theme.SmartGlassApplicationTheme
+
 
 class MainActivity : ComponentActivity() {
+
+    // Launcher for runtime permission requests
+    private val permissionLauncher =
+        registerForActivityResult(RequestMultiplePermissions()) { /* no-op */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        val button: Button = findViewById(R.id.button)
-        button.setOnClickListener{ pointGuardStats(this)}
 
-        val button2: Button = findViewById(R.id.button2)
-        button2.setOnClickListener{ shootingGuardStats(this)}
+        // Request BLE & location perms before doing any scanning
+        requestAllPermissions()
 
-        val button3: Button = findViewById(R.id.button3)
-        button3.setOnClickListener{ smallForwardStats(this)}
+        setContent {
+            SmartGlassApplicationTheme {
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "home") {
+                        composable("home") {
+                            HomeScreen(navController)
+                        }
+                        composable("stats") {
+                            PlayerStatsScreen(navController)
+                        }
+                        composable(
+                            "profile/{playerName}/{playerPosition}/{playerStats}/{playerImageRes}"
+                        ) { backStackEntry ->
+                            val args  = backStackEntry.arguments
+                            val name  = args?.getString("playerName") ?: ""
+                            val pos   = args?.getString("playerPosition") ?: ""
+                            val stats = args?.getString("playerStats") ?: ""
+                            val img   = args?.getString("playerImageRes")?.toIntOrNull() ?: 0
+                            PlayerProfileScreen(name, pos, stats, img)
+                        }
+                    }
+                }
+            }
+        }
 
-        val button4: Button = findViewById(R.id.button4)
-        button4.setOnClickListener{ powerForwardStats(this)}
-
-        val button5: Button = findViewById(R.id.button5)
-        button5.setOnClickListener{ centerStats(this)}
-
+        // Initialize Chaquopy (Python)
+        if (!Python.isStarted()) {
+            Python.start(AndroidPlatform(this))
+        }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Surface(color=Color.Red) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier.padding(24.dp)
-        )
-    }
-}
-
-fun pointGuardStats(view: MainActivity){
-    Toast.makeText(view, "5 Pts, 4 Ast, 1 Reb", Toast.LENGTH_SHORT).show()
-}
-
-fun shootingGuardStats(view: MainActivity){
-    Toast.makeText(view, "10 Pts, 1 Ast, 2 Reb", Toast.LENGTH_SHORT).show()
-}
-
-fun smallForwardStats(view: MainActivity){
-    Toast.makeText(view, "8 Pts, 0 Ast, 4 Reb", Toast.LENGTH_SHORT).show()
-}
-
-fun powerForwardStats(view: MainActivity){
-    Toast.makeText(view, "2 Pts, 0 Ast, 6 Reb", Toast.LENGTH_SHORT).show()
-}
-
-fun centerStats(view: MainActivity){
-    Toast.makeText(view, "3 Pts, 1 Ast, 11 Reb", Toast.LENGTH_SHORT).show()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SmartglassApplicationTheme {
-        Greeting("Basketball Smartglass")
+    /**
+     * Always ask for ACCESS_FINE_LOCATION (needed for BLE scanning shim),
+     * plus BLUETOOTH_SCAN & BLUETOOTH_CONNECT on Android 12+
+     */
+    private fun requestAllPermissions() {
+        val perms = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            perms += Manifest.permission.BLUETOOTH_SCAN
+            perms += Manifest.permission.BLUETOOTH_CONNECT
+        }
+        val missing = perms.any { perm ->
+            ContextCompat.checkSelfPermission(this, perm) !=
+                    PermissionChecker.PERMISSION_GRANTED
+        }
+        if (missing) {
+            permissionLauncher.launch(perms.toTypedArray())
+        }
     }
 }
