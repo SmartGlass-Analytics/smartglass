@@ -92,7 +92,7 @@ fun PlayerProfileScreen(
                             ).show()
                         } else {
                             val ble = BleCommunicator(context)
-                            val printString = "$name: $chosen"
+                            val printString = "frame.display.text('$name:', 1, 1);frame.display.text('$chosen', 1, 61);frame.display.show();"
                             Log.d("BLE", printString)
                             ble.connectToDevice(printString)
                         }
