@@ -1,6 +1,9 @@
 package com.example.smartglassapplication.ui.theme
 
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,10 +22,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.smartglassapplication.ble.BrilliantBleClient
+import com.example.smartglassapplication.bluetooth.BleCommunicator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerProfileScreen(
@@ -85,26 +91,9 @@ fun PlayerProfileScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            scope.launch {
-                                BrilliantBleClient
-                                    .sendText(context, chosen)
-                                    .collect { result ->
-                                        result.onSuccess {
-                                            Toast.makeText(
-                                                context,
-                                                "Sent to glasses!",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                        result.onFailure { err ->
-                                            Toast.makeText(
-                                                context,
-                                                "BLE error: ${err.message}",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                            }
+                            val ble = BleCommunicator(context)
+                            Log.d("BLE", "Chosen Stats: $chosen")
+                            ble.connectToDevice(chosen)
                         }
                     },
                     modifier = Modifier

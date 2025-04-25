@@ -20,6 +20,7 @@ import com.example.smartglassapplication.ui.theme.PlayerProfileScreen
 import com.example.smartglassapplication.ui.theme.PlayerStatsScreen
 import com.example.smartglassapplication.ui.theme.SmartGlassApplicationTheme
 
+
 class MainActivity : ComponentActivity() {
 
     // Launcher for runtime permission requests

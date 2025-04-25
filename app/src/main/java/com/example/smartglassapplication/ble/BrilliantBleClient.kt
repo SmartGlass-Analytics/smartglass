@@ -22,8 +22,8 @@ import java.util.UUID
  */
 object BrilliantBleClient {
 
-    private val SERVICE_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
-    private val TX_UUID      = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
+    private val SERVICE_UUID = UUID.fromString("7A230001-5475-A6A4-654C-8431F6AD49C4")
+    private val TX_UUID      = UUID.fromString("7A230003-5475-A6A4-654C-8431F6AD49C4")
 
     @SuppressLint("MissingPermission")
     fun sendText(ctx: Context, text: String): Flow<Result<Unit>> = callbackFlow {
